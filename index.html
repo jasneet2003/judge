@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HackIndore Judging System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    select,
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>HackIndore Judging System</h1>
+    <div class="form-group">
+      <label for="role">Select Role:</label>
+      <select id="role" onchange="displayForm()">
+        <option value="">Select Role</option>
+        <option value="mentor">Mentor</option>
+        <option value="judge">Judge</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="team">Select Team:</label>
+      <select id="team">
+        <option value="">Select Team</option>
+        <option value="team1">Team 1</option>
+        <option value="team2">Team 2</option>
+        <option value="team3">Team 3</option>
+      </select>
+    </div>
+    <div id="criteriaForm" style="display:none;">
+      <div class="form-group">
+        <label>Code Structure:</label>
+        <input type="number" min="1" max="10" id="codeStructure">
+      </div>
+      <div class="form-group">
+        <label>Feasibility:</label>
+        <input type="number" min="1" max="10" id="feasibility">
+      </div>
+      <div class="form-group">
+        <label>UI:</label>
+        <input type="number" min="1" max="10" id="ui">
+      </div>
+      <div id="mentorQuestions" style="display:none;">
+        <h3>Additional Mentor Questions</h3>
+        <!-- Add 15 additional questions here with input fields -->
+        <div class="form-group">
+          <label>Additional Question 1:</label>
+          <input type="number" min="1" max="10" id="mentorQuestion1">
+        </div>
+        <!-- Repeat for additional questions -->
+      </div>
+      <button onclick="submitForm()">Submit</button>
+    </div>
+  </div>
+
+  <script>
+        function displayForm() {
+            const role = document.getElementById('role').value;
+            const form = document.getElementById('criteriaForm');
+            const mentorQuestions = document.getElementById('mentorQuestions');
+            if (role) {
+                form.style.display = 'block';
+                if (role === 'mentor') {
+                    mentorQuestions.style.display = 'block';
+                } else {
+                    mentorQuestions.style.display = 'none';
+                }
+            } else {
+                form.style.display = 'none';
+            }
+        }
+
+        function submitForm() {
+            const role = document.getElementById('role').value;
+            const team = document.getElementById('team').value;
+            const codeStructure = document.getElementById('codeStructure').value;
+            const feasibility = document.getElementById('feasibility').value;
+            const ui = document.getElementById('ui').value;
+            const data = {
+                role,
+                team,
+                codeStructure,
+                feasibility,
+                ui
+            };
+
+            if (role === 'mentor') {
+                data.mentorQuestion1 = document.getElementById('mentorQuestion1').value;
+                // Add the rest of the mentor questions here
+            }
+
+            // Store data locally (e.g., in localStorage)
+            const existingData = JSON.parse(localStorage.getItem('judgingData')) || [];
+            existingData.push(data);
+            localStorage.setItem('judgingData', JSON.stringify(existingData));
+
+            alert('Data submitted successfully!');
+        }
+  </script>
+</body>
+
+</html>
